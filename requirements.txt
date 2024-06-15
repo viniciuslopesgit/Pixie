@@ -1,1 +1,6 @@
 flask
+authlib
+flask-sqlalchemy
+pymysql
+requests
+google-auth

@@ -1,23 +1,36 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from authlib.integrations.flask_client import OAuth
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash
+import google.oauth2.credentials
 import base64
 import os
 import requests
-import google.oauth2.credentials
-
 
 app = Flask(__name__)
+
+
 app.secret_key = os.urandom(24)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/db_users'
+
+db = SQLAlchemy(app)
 
 # Substitua pelos seus próprios valores do Google OAuth2
 app.config["GOOGLE_OAUTH_CLIENT_ID"] = "477235057610-9dsr7gv8h8t0u3l2jvrft0jub3uoj0jn.apps.googleusercontent.com"
 app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = "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"
 
-google_bp = make_google_blueprint(
-    client_id=app.config["GOOGLE_OAUTH_CLIENT_ID"],
-    client_secret=app.config["GOOGLE_OAUTH_CLIENT_SECRET"],
-    redirect_to="google_login"
+oauth = OAuth(app)
+
+google = oauth.register(
+    name='google',
+    client_id='477235057610-9dsr7gv8h8t0u3l2jvrft0jub3uoj0jn.apps.googleusercontent.com',
+    client_secret='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',
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid profile email'},
 )
-app.register_blueprint(google_bp, url_prefix="/login")
+
+#--------------------------------- Funções -----------------------------------
 
 # Chave API
 os.environ['STABILITY_API_KEY'] = 'sk-Yfp99POrmHO0N7bAUHO5ptUgPBkG9Q5t9Sln3kHkm3HFq5LC'
@@ -68,29 +81,68 @@ def generate_image():
 
     return jsonify({"urls": image_urls})
 
+# Criando login de usuário com a conta Google
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(255))
+    name = db.Column(db.String(255))
+
+    def __init__(self, email, name, password=None):
+        self.email = email
+        self.name = name
+        if password:
+            self.password = generate_password_hash(password)
+
+
+# ------------------------------------- Rotas -----------------------
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route("/login/google")
-def google_login():
-    if not google.authorized:
-        return redirect(url_for("google.login"))
+    
+@app.route('/login')
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_uri)
 
-    try:
-        resp = google.get("/plus/v1/people/me")
-        assert resp.ok, resp.text
-    except InvalidGrantError:
-        return redirect(url_for("google.login"))
-
-    user_info = resp.json()
-    session["user_info"] = user_info
-    return f"Logged in as {user_info['displayName']}"
-
-@app.route("/logout")
+@app.route('/logout')
 def logout():
-    session.pop("user_info", None)
-    return redirect(url_for("index"))
+    session.pop('email', None)
+    return redirect('/')
+
+@app.route('/auth')
+def authorize():
+    try:
+        token = google.authorize_access_token()
+        user_info_resp = google.get('https://www.googleapis.com/oauth2/v3/userinfo', token=token)
+        user_info = user_info_resp.json()
+        email = user_info.get('email')
+        name = user_info.get('name')
+        
+        if not email:
+            raise ValueError("Email not found in user_info", user_info)
+        
+        session['email'] = email
+        session['name'] = name
+
+        # Verifica se o usuário já existe no banco de dados
+        user = User.query.filter_by(email=email).first()
+        if not user:
+                new_user = User(email=email, name=name)
+                db.session.add(new_user)
+                db.session.commit()
+        
+        # Simulação de um user_id
+        session['user_id'] = email.split('@')[0]
+        print('Usuário autenticado com sucesso:', email)
+        return redirect(url_for('dashboard'))
+    
+    except Exception as e:
+        print('Erro durante a autorização:', e)
+    
+    return redirect('/')
 
 
 
