@@ -37,8 +37,20 @@
         </div>
 
         <ul class="menu_desktop">
-            <li><a href="https://www.pixie-lab.com">Sign in</a></li>
-            <href="javascript:void(0);" onclick="openModal()"><li class="get_started"><a>Get started</a></li>
+            
+                {%if 'name' in session %}
+                    <p>Bem-vindo, {{ session['name'] }}</p>
+                    <li class="get_started">
+                        <a href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li><a href="https://www.pixie-lab.com">Sign in</a></li>
+                    <href="javascript:void(0);" onclick="openModal()">
+                    <li class="get_started">
+                        <a>Get started</a>
+                    </li>
+                {% endif %}
+            
         </ul>
     </div>
 
@@ -48,7 +60,11 @@
             <!--<h1>Create Art with AI</h1>-->
             <div id="create_img">
                 <textarea id="prompt" rows="4" cols="50" placeholder="Onde o sol poente..."></textarea>
-                <button id="generateButton" onclick="generateImage()">Create</button>
+                {% if 'name' in session %}
+                    <button id="generateButton" onclick="generateImage()">Create</button>
+                {% else %}
+                    <button id="generateButton" onclick="openModal()">Create</button>
+                {% endif %}
             </div>
         </div>
     </div>

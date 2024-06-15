@@ -6,6 +6,7 @@ import google.oauth2.credentials
 import base64
 import os
 import requests
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -94,8 +95,17 @@ class User(db.Model):
         if password:
             self.password = generate_password_hash(password)
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'email' not in session:
+            # Aqui você pode redirecionar para o modal ou para outra página
+            # Pode ser útil definir uma variável de sessão para a página atual
+            return redirect(url_for('show_modal_login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
 
-# ------------------------------------- Rotas -----------------------
+# ------------------------------- Rotas -----------------------
 
 @app.route('/')
 def index():
@@ -110,6 +120,9 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('email', None)
+    session.pop('name', None)
+    session.pop('user_id', None)
+    
     return redirect('/')
 
 @app.route('/auth')
