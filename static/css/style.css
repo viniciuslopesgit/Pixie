@@ -1,0 +1,429 @@
+body {
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    color: #050505;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; /* Cor de fundo */
+}
+
+#menu {
+    height: 55px;
+    display: flex; 
+    box-sizing: border-box;
+    border-bottom: 1px solid #f3f3f3;
+    width: 100%;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+#logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-right: 20px;
+}
+
+#logo img{
+    height: 36px;
+}
+
+#search-bar {
+    flex: 3;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px 0;
+}
+
+#search-bar form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative; /* Adiciona posicionamento relativo para o container */
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+#search-bar input[type="text"] {
+    width: 25%;
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    padding: 10px ; /* Ajusta o padding para o ícone da lupa do lado esquerdo */
+    padding-left: 50px;
+    border: 0px;
+    background-color: #f6f6f6;
+    border-radius: 30px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.search-button {
+    position: absolute;
+    left: 10px; /* Posiciona o botão à esquerda */
+    background: transparent;
+    font-weight: lighter;
+    border: none;
+    padding: 10px 30px 0 0 ;
+    cursor: pointer;
+    font-size: 16px;
+    color: #929292;
+    width: 60px;
+}
+
+.search-button:hover {
+    color: #0071e3;
+    background-color: transparent;
+}
+
+.menu_desktop {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    list-style: none;
+}
+
+.menu_desktop li {
+    margin-left: 15px;
+}
+
+.menu_desktop a {
+    text-decoration: none;
+    color: #000;
+}
+
+.get_started {
+    cursor: pointer;
+    padding: 10px 20px 10px 20px;
+    font-weight: 300;
+    background-color: #000;
+    opacity: 82%;
+    border-radius: 999px;
+}
+
+.get_started:hover {
+    opacity: 85%;
+}
+
+.get_started a {
+    color: white;
+}
+
+#content_01 {
+    padding: 20px 300px 0 300px;
+    font-size: 14px;
+    height: 200px;
+    margin-top: 40px;
+}
+
+#create_img {
+    align-items: center;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    height: 45px;
+    min-width: 300px;
+    padding-left: 20px;
+    padding-right: 2px;
+}
+
+textarea {
+    outline: none; /* Remove a borda de foco padrão */
+    border: 0px;
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    padding-top:13px;
+    font-size: 14px;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    resize: none;
+}
+
+#prompt {
+    resize: none;
+    outline: none; /* Remove a borda de foco padrÃ£o */     
+}
+
+#prompt:focus {
+    border-color: transparent; /* Cor da borda ao focar */
+}
+
+#prompt::placeholder {
+    color: #999; /* Cor do texto do placeholder */
+}
+
+button {
+    padding: 12px 20px;
+    background-color: #0071e3;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 300;
+    color: #fff; 
+}
+
+button:hover {
+    
+    background-color: #006ddb;
+    opacity: 100%;
+}
+
+#input {
+    text-align: center;
+    align-items: center;
+    min-width: 300px;
+    top: 0;
+}
+
+#input h1{
+    font-size: 50px;
+    font-weight: 600;
+}
+
+#content_02 {
+    padding: 80px;
+    font-size: 14px;
+}
+
+#content_02 h2 {
+    font-weight: 500;
+    font-size: 20px;
+    padding: 0;
+    margin-top: -30px;
+}
+
+#menu2{
+    display: flex; 
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 ;
+    font-size: 14px;
+    align-items: center;
+}
+
+#menu2 li{
+    font-size: 14px;
+    opacity: 87%;
+    list-style: none;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+#menu2 li:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    break-inside: avoid;
+    margin: 0;
+}
+
+figure > img {
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+}
+
+.dashboard {
+    margin-top: 20px;
+    width: 100%;
+    column-count: 4;
+    column-gap: 10px;
+}
+
+#footer {
+    border-top: 1px solid #e2e2e2;
+    height: 50px;
+    width: 100%;
+    bottom: 0;
+    margin-top: 200px;
+}
+
+#footer p {
+    font-size: 14px;
+    padding-top: 10px;
+    float: left;
+}
+
+/* Ohers pages */
+
+#faq {
+    margin: auto;
+    max-width: 800px;
+}
+
+
+/* Login modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.94);
+    padding-top: 10px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin:  auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 42%;
+    height: 91%;
+}
+
+.modal_form {
+    text-align: center;
+}
+
+.modal_join_p {
+    font-weight: 500px;
+    font-size: 28px;
+    padding-top: 80px;
+}
+
+.close {
+    margin: 0;
+    margin-top: -30px;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close img {
+    opacity: 60%;
+    height: 20px;
+}
+.close img:hover {
+    opacity: 100%;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal_create_account {
+    display:grid;
+    font-size: 14px;
+    padding: 120px 140px 0 140px;
+}
+
+.modal_create_account p{
+    padding-top: 10px;
+    align-items: center;
+}
+
+.modal_create_google_account {
+    border: 1px solid #606060;
+    border-radius: 30px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    display: flex; 
+    align-items: center;    
+    justify-content: center;
+}
+
+.modal_create_google_account img{
+    max-width: 36px;
+    position: absolute;
+    margin-left: -240px;
+}
+
+.modal_create_email_account {
+    border: 1px solid #606060;
+    border-radius: 30px;
+    border-radius: 30px;
+    padding: 10px 20px;
+    display: flex; 
+    align-items: center;    
+    justify-content: center;
+}
+
+.modal_create_email_account img{
+    max-width: 20px;
+    position: absolute;
+    margin-left: -240px;
+}
+@media (max-width: 1200px) {
+    .dashboard {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard {
+        column-count: 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    #menu {
+        padding: 0 20px 0 20px;
+    }
+
+    #content_01 {
+        margin-top: 40px;
+        padding: 20px;
+    }
+
+    .example-container img {
+        max-width: 100% !important;
+    }
+
+    #input {
+        width: 100%;
+        display: block;
+    }
+
+    #input h1{
+        font-size: 38px;
+    }
+
+
+}
+
+@media only screen and (max-width: 480px) {
+
+    #input {
+        font-size: 14px;
+    }
+
+    #footer {
+        margin-top: 30px;
+    }
+}

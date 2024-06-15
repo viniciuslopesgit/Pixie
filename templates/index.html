@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--GOOGLE FONT-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" user-scalable="no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!--  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">   -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" type="image/png" href="/static/assets/pixie_logo.png">
+    <title>Pixie Lab - Transforme texto em imagens de forma rápida</title>
+    <meta name="description" content="Pixie Lab é uma ferramenta online que converte texto em imagens de forma rápida e fácil. Experimente agora!">
+</head>
+<body>
+
+
+    <div id="menu">
+        <div id="logo">
+            <img src="static/assets/pixie_logo.png" alt="pixie logo">
+        </div>
+        
+        <div id="search-bar">
+            <form action="/search" method="get">
+                <div class="search-container">
+                    <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                    <input type="text" name="query" placeholder="Buscar...">
+                </div>
+            </form>
+        </div>
+
+        <ul class="menu_desktop">
+            <li><a href="https://www.pixie-lab.com">Sign in</a></li>
+            <href="javascript:void(0);" onclick="openModal()"><li class="get_started"><a>Get started</a></li>
+        </ul>
+    </div>
+
+    <div id="content_01">
+        <div id="input">
+            <h1>The best free stock photos AI</h1>
+            <!--<h1>Create Art with AI</h1>-->
+            <div id="create_img">
+                <textarea id="prompt" rows="4" cols="50" placeholder="Onde o sol poente..."></textarea>
+                <button id="generateButton" onclick="generateImage()">Create</button>
+            </div>
+        </div>
+    </div>
+    <div id="content_02">
+        <h2>Descubra</h2>
+            <div id="menu2">
+                <li><a>Wallpaper</a></li>
+                <li><a>Fotográfia</a></li>
+                <li><a>Tecnológia</a></li>
+                <li><a>Natureza</a></li>
+                <li><a>Espaço</a></li>
+                <li><a>Arquitetura</a></li>
+                <li><a>Design</a></li>
+                <li><a>Ilustração</a></li>
+                <li><a>Pintura</a></li>
+        
+    </div>
+    <div class="dashboard">
+        <figure>
+            <img src="static/out/1.webp" alt="Imagem 2">
+            
+        </figure>
+        <figure>
+            <img src="static/out/2.webp" alt="Imagem 3">
+            
+        </figure>
+        <figure>
+            <img src="static/out/3.webp" alt="Imagem 4">
+            
+        </figure>
+        <figure>
+            <img src="static/out/4.jpg" alt="Imagem 5">
+            
+        </figure>
+        <figure>
+            <img src="static/out/5.jpg" alt="Imagem 6">
+            
+        </figure>
+        <figure>
+            <img src="static/out/6.png" alt="Imagem 7">
+            
+        </figure>
+        <figure>
+            <img src="static/out/7.webp" alt="Imagem 8">
+        </figure>
+        <figure>
+            <img src="static/out/9.png" alt="Imagem 2">
+        </figure>    
+    </div>
+
+
+    <div id="footer">
+        <p>© 2024 Pixie Lab</p>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal_form">
+                <span class="close" onclick="closeModal()"><img src="/static/assets/cancel_close_delete_icon.png"></span>
+                <p class="modal_join_p">Join Pixie.</h2>
+                <div class="modal_create_account">
+                    <a class="modal_create_google_account">
+                        <img src="/static/assets/google_g_icon.png"> 
+                            Continue with Google
+                    </a>
+                    <a class="modal_create_email_account">
+                        <img src="/static/assets/envelope_email_icon.png">
+                            Continue with email
+                    </a>
+                    <p>Already have an account? <a href="#" style="color: #0071e3; font-weight: 600; text-decoration: none;">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateImage() {
+            var promptText = document.getElementById("prompt").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/generate_image", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var responseData = JSON.parse(xhr.responseText);
+                    var imageUrl = responseData.urls[0]; // Usar a primeira URL da lista
+                    document.getElementById("example").src = imageUrl;
+                }
+            };
+            xhr.send(JSON.stringify({ prompt: promptText }));
+        }
+    </script>
+
+    <!--Modal-->
+    <script>
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("myModal")) {
+                document.getElementById("myModal").style.display = "none";
+            }
+        }
+    </script>
+
+    
+</body>
+</html>
