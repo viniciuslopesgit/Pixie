@@ -110,7 +110,6 @@ def login_required(f):
 @app.route('/')
 def index():
     return render_template('index.html')
-
     
 @app.route('/login')
 def login():
@@ -157,7 +156,10 @@ def authorize():
     
     return redirect('/')
 
-
+@app.route('/create')
+def create():
+    image_url = request.args.get('imageUrl')
+    return render_template('create.html', image_url=image_url)
 
 # Run app
 

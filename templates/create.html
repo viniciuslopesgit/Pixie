@@ -1,16 +1,36 @@
+<!-- create.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0", user-scalable="no">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Pixie Lab - Transforme texto em imagens de forma rápida</title>
-    <meta name="description" content="Pixie Lab é uma ferramenta online que converte texto em imagens de forma rápida e fácil. Experimente agora!">
-
+    <title>Imagem Gerada</title>
+    <!-- Incluir outros metadados e links necessários -->
 </head>
-    <body>
-    </body>
+<body>
+    <h1>Imagem Gerada</h1>
+    <img id="generatedImage" src="" alt="Imagem gerada">
+
+    <script>
+        // Função para obter o valor de um parâmetro de URL
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var url = window.location.href;
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+            var results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Obter o parâmetro imageUrl da URL
+        var imageUrl = getParameterByName('imageUrl');
+        
+        // Definir o src do elemento img com o URL da imagem
+        if (imageUrl) {
+            document.getElementById("generatedImage").src = imageUrl;
+        } else {
+            alert("URL da imagem não encontrada.");
+        }
+    </script>
+</body>
 </html>
