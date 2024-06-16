@@ -8,29 +8,7 @@
 </head>
 <body>
     <h1>Imagem Gerada</h1>
-    <img id="generatedImage" src="" alt="Imagem gerada">
+    <img id="generatedImage" src="{{ image_url }}" alt="Imagem gerada">
 
-    <script>
-        // Função para obter o valor de um parâmetro de URL
-        function getParameterByName(name) {
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var url = window.location.href;
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
-            var results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
-        // Obter o parâmetro imageUrl da URL
-        var imageUrl = getParameterByName('imageUrl');
-        
-        // Definir o src do elemento img com o URL da imagem
-        if (imageUrl) {
-            document.getElementById("generatedImage").src = imageUrl;
-        } else {
-            alert("URL da imagem não encontrada.");
-        }
-    </script>
 </body>
 </html>
