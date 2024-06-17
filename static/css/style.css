@@ -145,6 +145,10 @@ textarea {
     resize: none;
 }
 
+textarea::-webkit-scrollbar {        
+    display: none; /* Esconde a barra de rolagem */    
+}
+
 #prompt {
     resize: none;
     outline: none; /* Remove a borda de foco padrÃ£o */     

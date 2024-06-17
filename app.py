@@ -2,22 +2,25 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 from authlib.integrations.flask_client import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
+from functools import wraps
 import google.oauth2.credentials
-import base64
 import os
 import requests
-from functools import wraps
+import base64
 
 app = Flask(__name__)
 
 
 app.secret_key = os.urandom(24)
+print("Secret Key: ", app.secret_key)
+
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/db_users'
 
 db = SQLAlchemy(app)
 
-# Substitua pelos seus próprios valores do Google OAuth2
+# CHAVE API Google
 app.config["GOOGLE_OAUTH_CLIENT_ID"] = "477235057610-9dsr7gv8h8t0u3l2jvrft0jub3uoj0jn.apps.googleusercontent.com"
 app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = "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"
 
@@ -31,56 +34,57 @@ google = oauth.register(
     client_kwargs={'scope': 'openid profile email'},
 )
 
-#--------------------------------- Funções -----------------------------------
 
-# Chave API
+# Chave API Stable Difusion
 os.environ['STABILITY_API_KEY'] = 'sk-Yfp99POrmHO0N7bAUHO5ptUgPBkG9Q5t9Sln3kHkm3HFq5LC'
 
-engine_id = "stable-diffusion-xl-1024-v1-0"
+engine_id = "stable-diffusion-v1-6"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
 api_key = os.getenv("STABILITY_API_KEY")
 
 if api_key is None:
     raise Exception("Missing Stability API key.")
 
+#--------------------------------- Funções -----------------------------------
+
 @app.route('/generate_image', methods=['POST'])
 def generate_image():
     prompt = request.json.get('prompt', '')
 
     response = requests.post(
-        f"{api_host}/v1/generation/{engine_id}/text-to-image",
+        "https://api.stability.ai/v2beta/stable-image/generate/core",
         headers={
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": f"Bearer {api_key}"
+            "Authorization": f"Bearer {api_key}",
+            "Accept": "image/*"
         },
-        json={
-            "text_prompts": [{"text": prompt}],
-            "cfg_scale": 7,
-            "height": 1536,
-            "width": 640,
-            "samples": 1,
-            "steps": 30,
+        files={"none": ''},
+        data={
+            "prompt": prompt,
+            "output_format": "png",
         },
     )
 
-    if response.status_code != 200:
-        return jsonify({"error": "Non-200 response: " + str(response.text)}), response.status_code
+    if response.status_code == 200:
+        # Salvar a imagem retornada pela API
+        unique_id = base64.urlsafe_b64encode(os.urandom(16)).decode('utf-8')
+        image_path = f"./static/out/generated_image_{unique_id}.png"
+        with open(image_path, 'wb') as file:
+            file.write(response.content)
 
-    data = response.json()
+        # Construir a URL para a imagem gerada
+        image_url = url_for('static', filename=f'out/generated_image_{unique_id}.png')
+        
+        # Redirecionar para a página que exibe a imagem
+        return jsonify({"url": url_for('display_image', image_url=image_url)}), 200
+    else:
+        return jsonify({"error": response.json()}), response.status_code
 
-    if "artifacts" not in data:
-        return jsonify({"error": "No artifacts found in response"}), 500
 
-    image_urls = []
+@app.route('/display_image')
+def display_image():
+    image_url = request.args.get('image_url')
+    return render_template('create.html', image_url=image_url)
 
-    for i, image in enumerate(data["artifacts"]):
-        image_path = f"static/out/v1_txt2img_{i}.png"
-        with open(image_path, "wb") as f:
-            f.write(base64.b64decode(image["base64"]))
-        image_urls.append(f"/{image_path}")
-
-    return jsonify({"urls": image_urls})
 
 # Criando login de usuário com a conta Google
 class User(db.Model):
@@ -99,8 +103,6 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'email' not in session:
-            # Aqui você pode redirecionar para o modal ou para outra página
-            # Pode ser útil definir uma variável de sessão para a página atual
             return redirect(url_for('show_modal_login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
@@ -122,7 +124,7 @@ def logout():
     session.pop('name', None)
     session.pop('user_id', None)
     
-    return redirect('/')
+    return redirect('index')
 
 @app.route('/auth')
 def authorize():
@@ -159,7 +161,16 @@ def authorize():
 @app.route('/create')
 def create():
     image_url = request.args.get('imageUrl')
-    return render_template('create.html', image_url=image_url)
+
+    if 'name' in session:
+        return render_template('create.html', image_url=image_url)
+    else:
+        return ("Error")
+
+    
+
+
+
 
 # Run app
 
