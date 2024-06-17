@@ -11,8 +11,8 @@ import base64
 app = Flask(__name__)
 
 
-app.secret_key = os.urandom(24)
-print("Secret Key: ", app.secret_key)
+# app.secret_key = os.urandom(24)
+app.secret_key = "my_secrete_key"
 
 
 
@@ -72,7 +72,7 @@ def generate_image():
             file.write(response.content)
 
         # Construir a URL para a imagem gerada
-        image_url = url_for('static', filename=f'out/generated_image_{unique_id}.png')
+        image_url = url_for('static', filename=f'out/generated_image_{unique_id}.png', _external=True)
         
         # Redirecionar para a página que exibe a imagem
         return jsonify({"url": url_for('display_image', image_url=image_url)}), 200

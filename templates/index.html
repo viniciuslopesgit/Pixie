@@ -148,15 +148,10 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var responseData = JSON.parse(xhr.responseText);
-                    var imageUrl = responseData.urls[0]; // Usar a primeira URL da lista
+                    var imageUrl = responseData.url; // Usar a URL retornada da API
 
-                    // Abrir create.html e passar o URL da imagem como parâmetro de URL
-                    var newWindowUrl = "/create?imageUrl=" + encodeURIComponent(imageUrl);
-                    window.location.href = newWindowUrl;
-
-                    // Abrir nova aba com create.html e passar o URL da imagem como parâmetro de URL
-                    // var newWindowUrl = "create.html?imageUrl=" + encodeURIComponent(imageUrl);
-                    // window.open(newWindowUrl, "_blank");
+                    // Redirecionar para a página que exibe a imagem
+                    window.location.href = imageUrl;
                 }
             };
             xhr.send(JSON.stringify({ prompt: promptText }));
