@@ -33,7 +33,7 @@ cd pixie
 ```
 2. Set up the virtual environment and install the dependencies:
 ```
-python3 -m venv venv
+python3 -m venv menv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
