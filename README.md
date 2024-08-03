@@ -12,6 +12,7 @@
 ## Technologies Used
 
 - Flask: Micro-web framework used to develop the application's backend, providing flexibility and efficiency.
+- SQLAlchemy: A SQL toolkit and object relational mapping (ORM) library for Python, used to interact with the database using the Python language.
 - PostgreSQL: Relational database management system used to store user information and their generated images.
 - Nginx: Web server used to manage requests, increasing the application's performance and security.
 
