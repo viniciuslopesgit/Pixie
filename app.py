@@ -36,7 +36,7 @@ google = oauth.register(
 
 
 # Chave API Stable Difusion
-os.environ['STABILITY_API_KEY'] = 'sk-Yfp99POrmHO0N7bAUHO5ptUgPBkG9Q5t9Sln3kHkm3HFq5LC'
+os.environ['STABILITY_API_KEY'] = 'API_KEY'
 
 engine_id = "stable-diffusion-v1-6"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
