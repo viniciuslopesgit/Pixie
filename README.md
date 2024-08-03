@@ -41,7 +41,7 @@ pip install -r requirements.txt
 ```
 flask db upgrade
 ```
-6. Execute a aplicação:
+6. Run application:
 ```
 run app.py
 ```
