@@ -2,6 +2,8 @@
 
 ***Pixie*** is an innovative application designed to generate images through artificial intelligence using the Stable Diffusion API. With Pixie, users can easily create unique images and make them available for public use, contributing to a vast image bank accessible to all.
 
+![generated_image-1](https://github.com/user-attachments/assets/83984361-f100-403f-b017-0aafd28a6d8c)
+
 ## Main Features
 
 - Image Generation with AI: Use the Stable Diffusion API to generate high-quality, unique images.
